@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 13:21:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2019/09/08 19:41:31 by ezalos           ###   ########.fr       */
+/*   Updated: 2019/09/08 23:33:32 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void		print_pixel(t_snake *snake, int row, int col, int type);
 int 		big_loop(t_snake *snake);
 void		color_screen(t_snake *snake);
 void		terminal_setup(void);
+int			is_it_legal_move(t_snake *snake);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 12:00:47 by ezalos            #+#    #+#             */
-/*   Updated: 2019/09/08 23:24:49 by ezalos           ###   ########.fr       */
+/*   Updated: 2019/09/08 23:34:22 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void 		new_food(t_snake *snake)
 {
-	ft_printf("%s\n", __func__);
+	DEBUG_FUNC;
 	print_pixel(snake, snake->food.row, snake->food.col, BODY);
 	snake->food.row = ft_rand(snake->rows, 0);
 	snake->food.col = ft_rand(snake->cols, 0);
@@ -23,7 +23,7 @@ void 		new_food(t_snake *snake)
 
 void		snake_grow(t_snake *snake, int row, int col)
 {
-	ft_printf("%s\n", __func__);
+	DEBUG_FUNC;
 	snake->col_history[++snake->col_history[0]] = col;
 	snake->row_history[++snake->row_history[0]] = row;
 	ft_place_cursor(0, snake->cols - ft_strlen("SNAKE LVL XXXX"));
@@ -32,10 +32,9 @@ void		snake_grow(t_snake *snake, int row, int col)
 }
 void		snake_move(t_snake *snake, int row, int col)
 {
-	ft_printf("%s\n", __func__);
+	DEBUG_FUNC;
 	int i;
 
-	// ft_printf("New move\n");
 	i = 0;
 	while (++i < snake->col_history[0])
 		snake->col_history[i] = snake->col_history[i + 1];
@@ -44,12 +43,11 @@ void		snake_move(t_snake *snake, int row, int col)
 	while (++i < snake->row_history[0])
 		snake->row_history[i] = snake->row_history[i + 1];
 	snake->row_history[snake->row_history[0]] = row;
-	// ft_printf("END New move\n");
 }
 
 void	got_food(t_snake *snake)
 {
-	ft_printf("%s\n", __func__);
+	DEBUG_FUNC;
 	snake->board[snake->food.row][snake->food.col] == BODY;
 	snake_grow(snake, snake->first.row, snake->first.col);
 	new_food(snake);
@@ -75,6 +73,12 @@ void	calculate_head_pos(t_snake *snake)
 	ft_printf("[%d/%d;%d/%d]\n", snake->first.col, snake->cols, snake->first.row, snake->rows);
 }
 
+int		is_it_legal_move(t_snake *snake)
+{
+	return (snake->first.row < 0 || snake->first.row >= snake->rows
+		||  snake->first.col < 0 || snake->first.col >= snake->cols);
+}
+
 int 	big_loop(t_snake *snake)
 {
 	int end;
@@ -91,8 +95,7 @@ int 	big_loop(t_snake *snake)
 
 		calculate_head_pos(snake);
 
-		if (ft_printf("1\n") && (snake->first.row < 0 || snake->first.row >= snake->rows
-		|| snake->first.col < 0  || snake->first.col >= snake->cols))
+		if (ft_printf("1\n") && is_it_legal_move(snake))
 		{
 			ft_printf("%s\n", "OUT");
 			ft_press_any_key();
