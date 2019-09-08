@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 13:21:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2019/07/14 19:29:21 by ezalos           ###   ########.fr       */
+/*   Updated: 2019/09/08 19:41:31 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,22 @@
 # define EMPTY					0
 # define BODY					1
 # define FOOD					2
+# define DEAD					3
 
+
+# define REFRESH_TIME			300 //milliseconds
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <termios.h>
+
+#define BAUDRATE				B38400
+#define MODEMDEVICE				"/dev/ttyS1"
+#define _POSIX_SOURCE			1 /* code source conforme à POSIX */
+
+#define FALSE					0
+#define TRUE					1
 
 # define S_RIGHT					"\033[C"
 # define S_DOWN						"\033[B"
@@ -59,6 +74,13 @@ typedef struct							s_snake
 
 }										t_snake;
 
+typedef enum 							e_state
+{
+			INPUT,
+			CHECK,
+			ACTIO,
+}										t_state;
+
 /*
 ******************************************************************************
 **																			**
@@ -74,4 +96,22 @@ typedef struct							s_snake
 **   INIT	**
 **************
 */
+t_snake		*init(int ac, char **av);
+void 		print_it(t_snake *snake);
+void 		new_food(t_snake *snake);
+void		snake_grow(t_snake *snake, int row, int col);
+void		snake_move(t_snake *snake, int row, int col);
+int 		kbhit();
+void 		set_conio_terminal_mode();
+void 		reset_terminal_mode();
+int 		get_input(t_snake *snake);
+void		got_food(t_snake *snake);
+void		print_pixel(t_snake *snake, int row, int col, int type);
+int 		big_loop(t_snake *snake);
+void		color_screen(t_snake *snake);
+void		terminal_setup(void);
+
+
+
+
 #endif
